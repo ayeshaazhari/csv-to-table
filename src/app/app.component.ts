@@ -1,12 +1,17 @@
-import { Component, VERSION } from '@angular/core';
+import { Component, OnChanges, SimpleChanges, VERSION } from '@angular/core';
 import * as XLSX from 'xlsx';
+import * as $ from 'jquery';
+import { Subject } from 'rxjs';
+import { DataTableDirective } from "angular-datatables";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent  {
+ 
+  
   title = 'csv';
   public tableData: any;
   public tableTitle: any;
@@ -17,6 +22,18 @@ export class AppComponent {
   public pageEndCount = 10;
   public totalPageCount = 0;
   public currentPage = 0;
+ dtOptions:DataTables.Settings= {};
+ dtTrigger: Subject<any> = new Subject<any>(); 
+
+  ngOnInit() {
+  this.dtOptions = {
+    paging:true,
+  pagingType: 'full_numbers',
+  pageLength: 2,
+  processing:true
+}
+  }
+
 
   public uploadData(e:any) {
     console.log(e.target.files[0]);
@@ -25,7 +42,6 @@ export class AppComponent {
     if (target.files.length !== 1) {
       throw new Error('Cannot use multiple files');
     }
-
     const reader: FileReader = new FileReader();
     reader.readAsBinaryString(target.files[0]);
     reader.onload = (e: any) => {
@@ -42,22 +58,33 @@ export class AppComponent {
       console.log(data.length); // Data will be logged in array format containing objects
       this.tableData = data;
       this.tableTitle = Object.keys(this.tableData[0]);
-      this.tableTitle.pop();
-      this.tableTitle.shift();
       this.tableRecords = this.tableData.slice(
         this.pageStartCount,
         this.pageEndCount
       );
+      console.log(this.pageStartCount);
+      console.log(this.pageEndCount)
       this.totalPageCount = this.tableData.length / this.recordsPerPage;
+      console.log(this.totalPageCount)
     };
   }
 
   onPageChange() {
+    console.log(this.currentPage);
+    console.log(this.recordsPerPage)
     this.pageStartCount = this.currentPage * this.recordsPerPage;
     this.pageEndCount = this.pageStartCount + this.recordsPerPage;
     this.tableRecords = this.tableData.slice(
       this.pageStartCount,
       this.pageEndCount
     );
+    console.log(this.tableRecords)
+
   }
+
 }
+
+$(document).ready(function () {
+  $('#dtBasicExample').DataTable();
+  $('.dataTables_length').addClass('bs-select');
+});

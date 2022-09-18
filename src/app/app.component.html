@@ -10,8 +10,8 @@
 </div>
 <!-- {{ tableData | json }} -->
 
-<table cellspacing="10" cellpadding="10">
-  <tr>
+<!-- <table id="dtBasicExample" datatable [dtOptions]="dtOptions" cellspacing="0" cellpadding="0">
+  <tr class="p-4">
     <th *ngFor="let header of tableTitle">{{ header }}</th>
   </tr>
   <tr *ngFor="let data of tableRecords; let i = index">
@@ -19,12 +19,28 @@
       {{ data[header] }}
     </td>
   </tr>
-</table>
+</table> -->
 <!-- <div *ngIf="totalPageCount">
   Go To Page:
-  <select [(ngModel)]="currentPage" (change)="onPageChange()">
+  <select [(ngModel)]="currentPage" (click)="onPageChange()">
     <option *ngFor="let page of [].constructor(totalPageCount); let i = index">
       {{ i + 1 }}
     </option>
   </select>
 </div> -->
+
+<table datatable [dtOptions]="dtOptions" class="row-border hover">
+  <thead>
+    <tr >
+      <th *ngFor="let header of tableTitle">{{ header }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of tableRecords; let i = index">
+      <td *ngFor="let header of tableTitle">
+        {{ data[header] }}
+      </td>
+    </tr>
+    <tr></tr>
+  </tbody>
+</table>
