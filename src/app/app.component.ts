@@ -9,9 +9,9 @@ import { DataTableDirective } from "angular-datatables";
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent  {
+export class AppComponent {
  
-  
+  }
   title = 'csv';
   public tableData: any;
   public tableTitle: any;
